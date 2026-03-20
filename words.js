@@ -1,0 +1,22 @@
+const words = [
+    { kanji: "日", kana: "にち", meaning: "日，太阳" },
+    { kanji: "月", kana: "つき", meaning: "月，月亮" },
+    { kanji: "水", kana: "みず", meaning: "水" },
+    { kanji: "木", kana: "き", meaning: "木，树" },
+    { kanji: "金", kana: "かね", meaning: "金，钱" },
+    { kanji: "土", kana: "つち", meaning: "土，土壤" },
+    { kanji: "天", kana: "てん", meaning: "天，天空" },
+    { kanji: "地", kana: "ち", meaning: "地，地面" },
+    { kanji: "人", kana: "ひと", meaning: "人" },
+    { kanji: "山", kana: "やま", meaning: "山" },
+    { kanji: "川", kana: "かわ", meaning: "河，川" },
+    { kanji: "海", kana: "うみ", meaning: "海" },
+    { kanji: "花", kana: "はな", meaning: "花" },
+    { kanji: "草", kana: "くさ", meaning: "草" },
+    { kanji: "虫", kana: "むし", meaning: "虫，昆虫" },
+    { kanji: "鱼", kana: "さかな", meaning: "鱼" },
+    { kanji: "鸟", kana: "とり", meaning: "鸟" },
+    { kanji: "犬", kana: "いぬ", meaning: "狗" },
+    { kanji: "猫", kana: "ねこ", meaning: "猫" },
+    { kanji: "本", kana: "ほん", meaning: "书，本" }
+];

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日语单词练习工具</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>日语单词练习</h1>
+        
+        <div class="word-display">
+            <div id="word-kanji">_</div>
+            <div id="word-kana">_</div>
+            <div id="word-meaning">_</div>
+        </div>
+        
+        <div class="canvas-container">
+            <canvas id="drawingCanvas" width="400" height="400"></canvas>
+        </div>
+        
+        <div class="button-container">
+            <button id="prevBtn">上一个</button>
+            <button id="nextBtn">下一个</button>
+            <button id="listenBtn">听读音</button>
+            <button id="repeatBtn">跟读</button>
+            <button id="checkBtn">检查</button>
+            <button id="clearBtn">清除</button>
+        </div>
+        
+        <div id="feedback"></div>
+    </div>
+    
+    <script src="words.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
