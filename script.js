@@ -11,6 +11,7 @@ window.onload = function() {
     loadProgress();
     updateWordDisplay();
     setupEventListeners();
+    setupImportFunctionality();
 };
 
 // 初始化Canvas
@@ -188,7 +189,7 @@ function generateTemplate(kanji) {
     templateCtx.stroke();
     
     // 绘制标准字
-    templateCtx.font = '180px Arial';
+    templateCtx.font = '180px "Hiragino Mincho ProN", "MS Mincho", serif';
     templateCtx.textAlign = 'center';
     templateCtx.textBaseline = 'middle';
     templateCtx.fillStyle = '#000';
@@ -229,7 +230,12 @@ function calculateSimilarity(userData, templateData) {
         }
     }
     
-    return totalCount > 0 ? matchCount / totalCount : 0;
+    // 确保有足够的有效像素进行判断
+    if (totalCount < 100) {
+        return 0;
+    }
+    
+    return matchCount / totalCount;
 }
 
 // 检查手写
@@ -243,7 +249,9 @@ function checkDrawing() {
     const similarity = calculateSimilarity(userData, templateData);
     const feedback = document.getElementById('feedback');
     
-    if (similarity > 0.7) {
+    console.log('相似度:', similarity);
+    
+    if (similarity > 0.75) {
         feedback.textContent = '正确！';
         feedback.style.color = 'green';
         setTimeout(nextWord, 1000);
@@ -311,4 +319,76 @@ function loadProgress() {
     if (savedIndex !== null) {
         currentWordIndex = parseInt(savedIndex) % words.length;
     }
+}
+
+// 导入单词功能
+function setupImportFunctionality() {
+    const fileInput = document.getElementById('fileInput');
+    const importBtn = document.getElementById('importBtn');
+    const importStatus = document.getElementById('importStatus');
+    
+    importBtn.addEventListener('click', function() {
+        const file = fileInput.files[0];
+        if (!file) {
+            importStatus.textContent = '请选择文件';
+            importStatus.style.color = 'red';
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                let importedWords;
+                if (file.name.endsWith('.json')) {
+                    importedWords = JSON.parse(e.target.result);
+                } else if (file.name.endsWith('.csv')) {
+                    importedWords = parseCSV(e.target.result);
+                } else {
+                    throw new Error('不支持的文件格式');
+                }
+                
+                if (Array.isArray(importedWords) && importedWords.length > 0) {
+                    words = importedWords;
+                    currentWordIndex = 0;
+                    updateWordDisplay();
+                    importStatus.textContent = `成功导入 ${importedWords.length} 个单词`;
+                    importStatus.style.color = 'green';
+                } else {
+                    throw new Error('文件内容格式错误');
+                }
+            } catch (error) {
+                importStatus.textContent = '导入失败: ' + error.message;
+                importStatus.style.color = 'red';
+            }
+        };
+        
+        reader.onerror = function() {
+            importStatus.textContent = '文件读取失败';
+            importStatus.style.color = 'red';
+        };
+        
+        reader.readAsText(file);
+    });
+}
+
+// 解析CSV文件
+function parseCSV(csvText) {
+    const lines = csvText.trim().split('\n');
+    const words = [];
+    
+    for (let i = 1; i < lines.length; i++) { // 跳过表头
+        const line = lines[i].trim();
+        if (line) {
+            const parts = line.split(',');
+            if (parts.length >= 3) {
+                words.push({
+                    kanji: parts[0].trim(),
+                    kana: parts[1].trim(),
+                    meaning: parts[2].trim()
+                });
+            }
+        }
+    }
+    
+    return words;
 }
